@@ -67,10 +67,10 @@ go-sdk-download:
 go-sdk-configure:
 	@echo "Configuring Go SDK $(GO_VERSION) ..."
 	@if [ "$(OS)" = "Linux" ]; then \
-		echo 'export PATH="$$PATH:$(GO_SDK_BIN_ROOT)"' >> ~/.profile; \
+		echo 'export PATH="$$PATH:$(GO_SDK_BIN_ROOT):$(HOME)/go/bin"' >> ~/.profile; \
 		echo "Please run 'source ~/.profile' to update your PATH."; \
 	elif [ "$(OS)" = "Darwin" ]; then \
-		echo 'export PATH="$$PATH:$(GO_SDK_BIN_ROOT)"' >> ~/.zshrc; \
+		echo 'export PATH="$$PATH:$(GO_SDK_BIN_ROOT):$(HOME)/go/bin"' >> ~/.zshrc; \
 		echo "Please run 'source ~/.zshrc' to update your PATH."; \
 	else \
 		echo "Unsupported operating system: $(OS)"; \
