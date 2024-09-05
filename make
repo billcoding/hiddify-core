@@ -94,6 +94,7 @@ go-sdk-configure() {
         if ! grep -Fxq "$PATH_ENTRY" "$PROFILE_FILE"; then
             echo "$PATH_ENTRY" >> "$PROFILE_FILE"
             echo "Please run 'source ~/.profile' to update your PATH."
+            source ~/.profile
         else
             echo "PATH entry already exists in $PROFILE_FILE."
         fi
@@ -102,6 +103,7 @@ go-sdk-configure() {
         if ! grep -Fxq "$PATH_ENTRY" "$PROFILE_FILE"; then
             echo "$PATH_ENTRY" >> "$PROFILE_FILE"
             echo "Please run 'source ~/.zshrc' to update your PATH."
+            source ~/.zshrc
         else
             echo "PATH entry already exists in $PROFILE_FILE."
         fi
