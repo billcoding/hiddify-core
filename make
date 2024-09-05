@@ -94,7 +94,6 @@ go-sdk-configure() {
         if ! grep -Fxq "$PATH_ENTRY" "$PROFILE_FILE"; then
             echo "$PATH_ENTRY" >> "$PROFILE_FILE"
             echo "Please run 'source ~/.profile' to update your PATH."
-            source ~/.profile
         else
             echo "PATH entry already exists in $PROFILE_FILE."
         fi
@@ -103,7 +102,6 @@ go-sdk-configure() {
         if ! grep -Fxq "$PATH_ENTRY" "$PROFILE_FILE"; then
             echo "$PATH_ENTRY" >> "$PROFILE_FILE"
             echo "Please run 'source ~/.zshrc' to update your PATH."
-            source ~/.zshrc
         else
             echo "PATH entry already exists in $PROFILE_FILE."
         fi
@@ -115,6 +113,7 @@ go-sdk-configure() {
     "$GO_EXEC_BIN" env -w GOPATH="$GO_PATH_DIR"
     "$GO_EXEC_BIN" env -w GO111MODULE=on
     "$GO_EXEC_BIN" env -w GOPROXY="https://goproxy.io,direct"
+    export PATH="$PATH:$GO_ROOT_BIN_DIR:$GO_PATH_BIN_DIR"
 }
 
 go-deps-install() {
