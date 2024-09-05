@@ -72,7 +72,7 @@ go-prints() {
     echo "GO_PATH_DIR: $GO_PATH_DIR"
     echo "GO_ROOT_BIN_DIR: $GO_ROOT_BIN_DIR"
     echo "GO_PATH_BIN_DIR: $GO_PATH_BIN_DIR"
-    echo "GO_EXEC_BIN: $GO_EXEC_BIN"
+    echo "GO_EXEC_BIN_ENV: $GO_EXEC_BIN_ENV"
     echo "GO_EXEC_BIN: $GO_EXEC_BIN"
 }
 
@@ -114,9 +114,6 @@ go-sdk-configure() {
     "$GO_EXEC_BIN" env -w GO111MODULE=on
     "$GO_EXEC_BIN" env -w GOPROXY="https://goproxy.io,direct"
 }
-
-
-
 
 go-deps-install() {
     # if ! command -v protoc-gen-go > /dev/null 2>&1; then
@@ -242,7 +239,7 @@ build-protobuf() {
 }
 
 clean() {
-    rm -rf "$BINDIR"/*
+    rm -rf build "$BINDIR"/*
 }
 
 # Main entry point
