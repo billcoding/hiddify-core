@@ -16,6 +16,9 @@ OS=$(uname -s)
 GO_VERSION="1.22.5"
 GO_TARFILE="go$GO_VERSION.tar.gz"
 
+TAGS="with_gvisor,with_quic,with_wireguard,with_ech,with_utls,with_clash_api,with_grpc"
+IOS_ADD_TAGS="with_dhcp,with_low_memory,with_conntrack"
+
 case $OS in
     Linux)
         OS_ARCH=$(uname -m)
@@ -112,10 +115,8 @@ go-sdk-configure() {
     "$GO_EXEC_BIN" env -w GOPROXY="https://goproxy.io,direct"
 }
 
-TAGS="with_gvisor,with_quic,with_wireguard,with_ech,with_utls,with_clash_api,with_grpc"
-IOS_ADD_TAGS="with_dhcp,with_low_memory,with_conntrack"
-GOBUILDLIB=CGO_ENABLED=1 "$GO_EXEC_BIN" build -trimpath -tags "$TAGS" -ldflags="-w -s" -buildmode=c-shared
-GOBUILDSRV=CGO_ENABLED=1 "$GO_EXEC_BIN" build -ldflags "-s -w" -trimpath -tags "$TAGS"
+
+
 
 go-deps-install() {
     # if ! command -v protoc-gen-go > /dev/null 2>&1; then
@@ -180,6 +181,8 @@ webui() {
 
 windows-amd64() {
     curl http://localhost:18020/exit || echo "exited"
+    GOBUILDLIB="CGO_ENABLED=1 \"$GO_EXEC_BIN\" build -trimpath -tags \"$TAGS\" -ldflags=\"-w -s\" -buildmode=c-shared"
+    GOBUILDSRV="CGO_ENABLED=1 \"$GO_EXEC_BIN\" build -ldflags \"-s -w\" -trimpath -tags \"$TAGS\""
     env GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc "$GOBUILDLIB" -o "$BINDIR/$LIBNAME.dll" ./custom
     "$GO_EXEC_BIN" install -mod=readonly github.com/akavel/rsrc@latest || echo "rsrc error in installation"
     "$GO_EXEC_BIN" run ./cli tunnel exit
@@ -193,6 +196,8 @@ windows-amd64() {
 linux-amd64() {
     go-sdk-check
     mkdir -p "$BINDIR/lib"
+    GOBUILDLIB="CGO_ENABLED=1 \"$GO_EXEC_BIN\" build -trimpath -tags \"$TAGS\" -ldflags=\"-w -s\" -buildmode=c-shared"
+    GOBUILDSRV="CGO_ENABLED=1 \"$GO_EXEC_BIN\" build -ldflags \"-s -w\" -trimpath -tags \"$TAGS\""
     env GOOS=linux GOARCH=amd64 "$GOBUILDLIB" -o "$BINDIR/lib/$LIBNAME.so" ./custom
     mkdir lib
     cp "$BINDIR/lib/$LIBNAME.so" ./lib/$LIBNAME.so
@@ -225,6 +230,7 @@ macos-universal() {
     macos-arm64
     lipo -create "$BINDIR/$LIBNAME-amd64.dylib" "$BINDIR/$LIBNAME-arm64.dylib" -output "$BINDIR/$LIBNAME.dylib"
     cp "$BINDIR/$LIBNAME.dylib" ./"$LIBNAME.dylib"
+    GOBUILDSRV="CGO_ENABLED=1 \"$GO_EXEC_BIN\" build -ldflags \"-s -w\" -trimpath -tags \"$TAGS\""
     env GOOS=darwin GOARCH=amd64 CGO_CFLAGS="-mmacosx-version-min=10.11" CGO_LDFLAGS="-mmacosx-version-min=10.11" CGO_LDFLAGS="bin/$LIBNAME.dylib" CGO_ENABLED=1 "$GOBUILDSRV" -o "$BINDIR/$CLINAME" ./cli/bydll
     rm ./"$LIBNAME.dylib"
     chmod +x "$BINDIR/$CLINAME"
