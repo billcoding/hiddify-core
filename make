@@ -112,10 +112,10 @@ go-sdk-configure() {
     "$GO_EXEC_BIN" env -w GOPROXY="https://goproxy.io,direct"
 }
 
-TAGS=with_gvisor,with_quic,with_wireguard,with_ech,with_utls,with_clash_api,with_grpc
-IOS_ADD_TAGS=with_dhcp,with_low_memory,with_conntrack
-GOBUILDLIB=CGO_ENABLED=1 "$GO_EXEC_BIN" build -trimpath -tags $(TAGS) -ldflags="-w -s" -buildmode=c-shared
-GOBUILDSRV=CGO_ENABLED=1 "$GO_EXEC_BIN" build -ldflags "-s -w" -trimpath -tags $(TAGS)
+TAGS="with_gvisor,with_quic,with_wireguard,with_ech,with_utls,with_clash_api,with_grpc"
+IOS_ADD_TAGS="with_dhcp,with_low_memory,with_conntrack"
+GOBUILDLIB=CGO_ENABLED=1 "$GO_EXEC_BIN" build -trimpath -tags "$TAGS" -ldflags="-w -s" -buildmode=c-shared
+GOBUILDSRV=CGO_ENABLED=1 "$GO_EXEC_BIN" build -ldflags "-s -w" -trimpath -tags "$TAGS"
 
 go-deps-install() {
     # if ! command -v protoc-gen-go > /dev/null 2>&1; then
