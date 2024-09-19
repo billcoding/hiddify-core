@@ -41,7 +41,6 @@ const (
 var OutboundMainProxyTag = OutboundSelectTag
 
 func BuildConfigJson(configOpt ConfigOptions, input option.Options) (string, error) {
-
 	options, err := BuildConfig(configOpt, input)
 	if err != nil {
 		return "", err
@@ -57,9 +56,9 @@ func BuildConfigJson(configOpt ConfigOptions, input option.Options) (string, err
 	return buffer.String(), nil
 }
 
-// TODO include selectors
+// BuildConfig TODO include selectors
 func BuildConfig(opt ConfigOptions, input option.Options) (*option.Options, error) {
-	fmt.Printf("config options: %++v\n", opt)
+	// fmt.Printf("config options: %++v\n", opt)
 
 	var options option.Options
 	if opt.EnableFullConfig {
@@ -131,8 +130,8 @@ func setOutbounds(options *option.Options, input *option.Options, opt *ConfigOpt
 	var outbounds []option.Outbound
 	var tags []string
 	OutboundMainProxyTag = OutboundSelectTag
-	//inbound==warp over proxies
-	//outbound==proxies over warp
+	// inbound==warp over proxies
+	// outbound==proxies over warp
 	if opt.Warp.EnableWarp {
 		for _, out := range input.Outbounds {
 			if out.Type == C.TypeCustom {
