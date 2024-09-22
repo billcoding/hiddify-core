@@ -27,7 +27,7 @@ var (
 func Start(boxService *libbox.BoxService, connectCommandClient bool) {
 	startCommandServer(boxService)
 	if connectCommandClient {
-		startCommandClient()
+		StartCommandClient()
 	}
 	serviceStarted = true
 }
@@ -95,7 +95,8 @@ func startCommandServer(boxService *libbox.BoxService) (err error) {
 	return
 }
 
-func startCommandClient() (err error) {
+//export StartCommandClient
+func StartCommandClient() (err error) {
 	if commandClient == nil {
 		commandClient = libbox.NewCommandClient(commandHandler, &libbox.CommandClientOptions{
 			Command:        libbox.CommandStatus,
