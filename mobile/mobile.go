@@ -24,10 +24,16 @@ var (
 )
 
 //export Start
-func Start() { serviceStarted = true }
+func Start(boxService *libbox.BoxService, connectCommandClient bool) {
+	startCommandServer(boxService)
+	if connectCommandClient {
+		startCommandClient()
+	}
+	serviceStarted = true
+}
 
 //export Stop
-func Stop() { serviceStarted = false }
+func Stop() { closeCommandServer(); closeCommandClient(); serviceStarted = false }
 
 //export ServiceStarted
 func ServiceStarted() bool { return serviceStarted }
@@ -75,7 +81,7 @@ func buildConfig(optionJson string, configJson string) (string, error) {
 	return config.BuildConfigJson(*configOptions, options)
 }
 
-func StartCommandServer(boxService *libbox.BoxService) (err error) {
+func startCommandServer(boxService *libbox.BoxService) (err error) {
 	if boxService == nil {
 		service = boxService
 	}
@@ -86,6 +92,10 @@ func StartCommandServer(boxService *libbox.BoxService) (err error) {
 			return
 		}
 	}
+	return
+}
+
+func startCommandClient() (err error) {
 	if commandClient == nil {
 		commandClient = libbox.NewCommandClient(commandHandler, &libbox.CommandClientOptions{
 			Command:        libbox.CommandStatus,
@@ -96,11 +106,14 @@ func StartCommandServer(boxService *libbox.BoxService) (err error) {
 	return
 }
 
-func CloseCommandServer() {
+func closeCommandServer() {
 	if commandServer != nil {
 		_ = commandServer.Close()
 		commandServer = nil
 	}
+}
+
+func closeCommandClient() {
 	if commandClient != nil {
 		_ = commandClient.Disconnect()
 		commandClient = nil
