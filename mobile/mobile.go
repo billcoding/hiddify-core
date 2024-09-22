@@ -33,10 +33,10 @@ func Stop() { serviceStarted = false }
 func ServiceStarted() bool { return serviceStarted }
 
 //export SetOptionJson
-func SetOptionJson(optionJson string) (err error) { defaultOptionJson = optionJson; return }
+func SetOptionJson(optionJson string) { defaultOptionJson = optionJson }
 
 //export SetConfigJson
-func SetConfigJson(configJson string) (err error) { defaultConfigJson = configJson; return }
+func SetConfigJson(configJson string) { defaultConfigJson = configJson }
 
 //export GetAllJson
 func GetAllJson() (string, error) {
