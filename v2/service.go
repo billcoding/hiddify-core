@@ -28,8 +28,8 @@ var (
 )
 
 func Setup(basePath string, workingPath string, tempPath string, statusPort int64, debug bool) error {
-	statusPropagationPort = int64(statusPort)
-	tcpConn := runtime.GOOS == "windows" //TODO add TVOS
+	statusPropagationPort = statusPort
+	tcpConn := runtime.GOOS == "windows" // TODO add TVOS
 	libbox.Setup(basePath, workingPath, tempPath, tcpConn)
 	sWorkingPath = workingPath
 	os.Chdir(sWorkingPath)

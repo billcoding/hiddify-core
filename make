@@ -220,7 +220,7 @@ macos-amd64() {
 
 macos-arm64() {
     go-sdk-check
-    env GOOS=darwin GOARCH=arm64 CGO_CFLAGS="-mmacosx-version-min=10.11" CGO_LDFLAGS="-mmacosx-version-min=10.11" CGO_ENABLED=1 "$GO_EXEC_BIN" build -trimpath -tags "$TAGS,$IOS_ADD_TAGS" -buildmode=c-shared -o "$BINDIR/$LIBNAME-arm64.dylib" ./custom
+    env GOOS=darwin GOARCH=arm64 CGO_CFLAGS="-mmacosx-version-min=10.11" CGO_LDFLAGS="-mmacosx-version-min=10.11" CGO_ENABLED=1 "$GO_EXEC_BIN" build -v -trimpath -tags "$TAGS,$IOS_ADD_TAGS" -buildmode=c-shared -o "$BINDIR/$LIBNAME-arm64.dylib" ./custom
 }
 
 macos-universal() {

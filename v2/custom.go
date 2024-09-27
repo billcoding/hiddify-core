@@ -54,7 +54,7 @@ func Start(in *pb.StartRequest) (*pb.CoreInfoResponse, error) {
 	})
 	Log(pb.LogLevel_INFO, pb.LogType_CORE, "Starting")
 	if CoreState != pb.CoreState_STOPPED {
-		Log(pb.LogLevel_INFO, pb.LogType_CORE, "Starting0000")
+		Log(pb.LogLevel_INFO, pb.LogType_CORE, "Starting")
 		Stop()
 		// return &pb.CoreInfoResponse{
 		// 	CoreState:   CoreState,
@@ -74,7 +74,6 @@ func StartService(in *pb.StartRequest) (*pb.CoreInfoResponse, error) {
 	Log(pb.LogLevel_DEBUG, pb.LogType_CORE, "Starting Core Service")
 	content := in.ConfigContent
 	if content == "" {
-
 		activeConfigPath = in.ConfigPath
 		fileContent, err := os.ReadFile(activeConfigPath)
 		if err != nil {
@@ -98,14 +97,14 @@ func StartService(in *pb.StartRequest) (*pb.CoreInfoResponse, error) {
 	}
 	if !in.EnableRawConfig {
 		Log(pb.LogLevel_DEBUG, pb.LogType_CORE, "Building config")
-		parsedContent_tmp, err := config.BuildConfig(*configOptions, parsedContent)
-		if err != nil {
-			Log(pb.LogLevel_FATAL, pb.LogType_CORE, err.Error())
-			resp := SetCoreStatus(pb.CoreState_STOPPED, pb.MessageType_ERROR_BUILDING_CONFIG, err.Error())
-			StopAndAlert(pb.MessageType_UNEXPECTED_ERROR, err.Error())
-			return &resp, err
+		parsedContentTmp, err2 := config.BuildConfig(*configOptions, parsedContent)
+		if err2 != nil {
+			Log(pb.LogLevel_FATAL, pb.LogType_CORE, err2.Error())
+			resp := SetCoreStatus(pb.CoreState_STOPPED, pb.MessageType_ERROR_BUILDING_CONFIG, err2.Error())
+			StopAndAlert(pb.MessageType_UNEXPECTED_ERROR, err2.Error())
+			return &resp, err2
 		}
-		parsedContent = *parsedContent_tmp
+		parsedContent = *parsedContentTmp
 	}
 	Log(pb.LogLevel_DEBUG, pb.LogType_CORE, "Saving config")
 	currentBuildConfigPath := filepath.Join(sWorkingPath, "current-config.json")

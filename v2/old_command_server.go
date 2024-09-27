@@ -46,8 +46,8 @@ func (csh *CommandServerHandler) PostServiceClose() {
 
 }
 func startCommandServer() error {
-	logger := coreLogFactory.NewLogger("[Command Server Handler]")
-	logger.Trace("Starting command server")
-	oldCommandServer = libbox.NewCommandServer(&CommandServerHandler{logger: logger}, 300)
+	logger0 := coreLogFactory.NewLogger("[Command Server Handler]")
+	logger0.Trace("Starting command server")
+	oldCommandServer = libbox.NewCommandServer(&CommandServerHandler{logger: logger0}, 300)
 	return oldCommandServer.Start()
 }

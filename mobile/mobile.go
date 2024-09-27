@@ -1,13 +1,9 @@
 package mobile
 
 import (
-	"encoding/json"
-
-	"github.com/hiddify/hiddify-core/config"
-	"github.com/sagernet/sing-box/experimental/libbox"
-	"github.com/sagernet/sing-box/option"
-
+	"github.com/hiddify/hiddify-core/utils"
 	_ "github.com/sagernet/gomobile"
+	"github.com/sagernet/sing-box/experimental/libbox"
 )
 
 var (
@@ -46,7 +42,7 @@ func SetConfigJson(configJson string) { defaultConfigJson = configJson }
 
 //export GetAllJson
 func GetAllJson() (string, error) {
-	return buildConfig(defaultOptionJson, defaultConfigJson)
+	return utils.BuildConfig(defaultOptionJson, defaultConfigJson)
 }
 
 //export IpLink
@@ -54,32 +50,6 @@ func UpLink() int { return upLink }
 
 //export DownLink
 func DownLink() int { return downLink }
-
-func buildConfig(optionJson string, configJson string) (string, error) {
-	var options option.Options
-	err := options.UnmarshalJSON([]byte(configJson))
-	if err != nil {
-		return "", err
-	}
-	configOptions := &config.ConfigOptions{}
-	err = json.Unmarshal([]byte(optionJson), configOptions)
-	if err != nil {
-		return "", nil
-	}
-	if configOptions.Warp.WireguardConfigStr != "" {
-		err = json.Unmarshal([]byte(configOptions.Warp.WireguardConfigStr), &configOptions.Warp.WireguardConfig)
-		if err != nil {
-			return "", err
-		}
-	}
-	if configOptions.Warp2.WireguardConfigStr != "" {
-		err = json.Unmarshal([]byte(configOptions.Warp2.WireguardConfigStr), &configOptions.Warp2.WireguardConfig)
-		if err != nil {
-			return "", err
-		}
-	}
-	return config.BuildConfigJson(*configOptions, options)
-}
 
 func startCommandServer(boxService *libbox.BoxService) (err error) {
 	if boxService == nil {

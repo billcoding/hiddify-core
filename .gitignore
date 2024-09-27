@@ -10,3 +10,6 @@
 
 build
 *_test.go
+libcore.h
+libcore.dylib
+libcore-*.dylib
