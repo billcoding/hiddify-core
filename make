@@ -156,6 +156,11 @@ android() {
     gomobile bind -v -androidapi=21 -javapkg=io.nekohasekai -tags="$TAGS" -trimpath -target=android -o "$BINDIR/$LIBNAME.aar" github.com/sagernet/sing-box/experimental/libbox ./mobile
 }
 
+android-arm64() {
+    prepare-install
+    gomobile bind -v -androidapi=21 -javapkg=io.nekohasekai -tags="$TAGS" -trimpath -target=android/arm64 -o "$BINDIR/$LIBNAME.aar" github.com/sagernet/sing-box/experimental/libbox ./mobile
+}
+
 ios-full() {
     prepare-install
     gomobile bind -v -target ios,iossimulator,tvos,tvossimulator,macos -libname=box -tags="$TAGS,$IOS_ADD_TAGS" -trimpath -ldflags="-w -s" -o "$BINDIR/$PRODUCT_NAME.xcframework" github.com/sagernet/sing-box/experimental/libbox ./mobile
@@ -271,6 +276,9 @@ case $1 in
         ;;
     android)
         android
+        ;;
+    android-arm64)
+        android-arm64
         ;;
     ios-full)
         ios-full

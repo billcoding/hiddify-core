@@ -1,8 +1,9 @@
 package mobile
 
 import (
-	"github.com/hiddify/hiddify-core/utils"
 	_ "github.com/sagernet/gomobile"
+
+	"github.com/hiddify/hiddify-core/utils"
 	"github.com/sagernet/sing-box/experimental/libbox"
 )
 
@@ -25,11 +26,10 @@ func Start(boxService *libbox.BoxService, connectCommandClient bool) {
 	if connectCommandClient {
 		StartCommandClient()
 	}
-	serviceStarted = true
 }
 
 //export Stop
-func Stop() { closeCommandServer(); closeCommandClient(); serviceStarted = false }
+func Stop() { closeCommandServer(); closeCommandClient() }
 
 //export ServiceStarted
 func ServiceStarted() bool { return serviceStarted }
@@ -93,8 +93,8 @@ func closeCommandClient() {
 
 type commandHandlerImpl struct{}
 
-func (c *commandHandlerImpl) Connected()          {}
-func (c *commandHandlerImpl) Disconnected(string) {}
+func (c *commandHandlerImpl) Connected()          { serviceStarted = true }
+func (c *commandHandlerImpl) Disconnected(string) { serviceStarted = false }
 func (c *commandHandlerImpl) ClearLog()           {}
 func (c *commandHandlerImpl) WriteLog(string)     {}
 func (c *commandHandlerImpl) WriteStatus(message *libbox.StatusMessage) {
