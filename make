@@ -19,33 +19,6 @@ GO_TARFILE="go$GO_VERSION.tar.gz"
 TAGS="with_gvisor,with_quic,with_wireguard,with_ech,with_utls,with_clash_api,with_grpc"
 IOS_ADD_TAGS="with_dhcp,with_low_memory,with_conntrack"
 
-case $OS in
-    Linux)
-        OS_ARCH=$(uname -m)
-        if [ "$OS_ARCH" = "x86_64" ]; then
-            GO_TARFILE="go$GO_VERSION.linux-amd64.tar.gz"
-        else
-            echo "Unsupported architecture: $OS_ARCH"
-            exit 1
-        fi
-        ;;
-    Darwin)
-        OS_ARCH=$(uname -m)
-        if [ "$OS_ARCH" = "x86_64" ]; then
-            GO_TARFILE="go$GO_VERSION.darwin-amd64.tar.gz"
-        elif [ "$OS_ARCH" = "arm64" ]; then
-            GO_TARFILE="go$GO_VERSION.darwin-arm64.tar.gz"
-        else
-            echo "Unsupported architecture: $OS_ARCH"
-            exit 1
-        fi
-        ;;
-    *)
-        echo "Unsupported operating system: $OS"
-        exit 1
-        ;;
-esac
-
 GO_DOWNLOAD_URL="https://go.dev/dl/$GO_TARFILE"
 GO_INSTALL_DIR="$HOME/sdk"
 GO_ROOT_DIR="$GO_INSTALL_DIR/go"
