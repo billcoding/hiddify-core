@@ -113,20 +113,18 @@ ios() {
 }
 
 webui() {
-    curl -L -o webui.zip https://github.com/hiddify/Yacd-meta/archive/gh-pages.zip
     unzip -d ./ -q webui.zip
-    rm webui.zip
     rm -rf bin/webui
     mv Yacd-meta-gh-pages bin/webui
 }
 
 windows-amd64() {
-    env GOOS=windows GOARCH=amd64 CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc go build -trimpath -tags "$TAGS" -ldflags="-s -w" -buildmode=c-shared -o "$BINDIR/$LIBNAME.dll" ./custom
-	go install -mod=readonly github.com/akavel/rsrc@latest || echo "rsrc error in installation"
-    go run ./cli tunnel exit
+    env GOOS=windows GOARCH=amd64 CGO_ENABLED=1 go build -trimpath -tags "$TAGS" -ldflags="-s -w -checklinkname=0" -buildmode=c-shared -v -o "$BINDIR/$LIBNAME.dll" ./custom
+	go install -ldflags="-s -w -checklinkname=0" -mod=readonly github.com/akavel/rsrc@latest || echo "rsrc error in installation"
+    go run -ldflags="-s -w -checklinkname=0" ./cli tunnel exit
     cp "$BINDIR/$LIBNAME.dll" ./${LIBNAME}.dll
     $(go env GOPATH)/bin/rsrc -ico ./assets/hiddify-cli.ico -o ./cli/bydll/cli.syso || echo "rsrc error in syso"
-    env GOOS=windows GOARCH=amd64 CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc CGO_LDFLAGS="$LIBNAME.dll" go build -trimpath -tags "$TAGS" -ldflags="-s -w" -o "$BINDIR/$CLINAME.exe" ./cli/bydll
+    env GOOS=windows GOARCH=amd64 CGO_ENABLED=1 CGO_LDFLAGS="$LIBNAME.dll" go build -trimpath -tags "$TAGS" -ldflags="-s -w -checklinkname=0" -v -o "$BINDIR/$CLINAME.exe" ./cli/bydll
     rm ./${LIBNAME}.dll
     webui
 }

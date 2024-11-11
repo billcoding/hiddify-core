@@ -35,7 +35,7 @@ var (
 
 //export startService
 func startService() (CErr *C.char) {
-	err := v2.Setup("/tmp/axxwow/basheDir", "/tmp/axxwow/workingDir", "/tmp/axxwow/tempDir", 10110, false)
+	err := v2.Setup("/tmp/sbox/basheDir", "/tmp/sbox/workingDir", "/tmp/sbox/tempDir", 10110, false)
 	if err != nil {
 		return emptyOrErrorC(err)
 	}
