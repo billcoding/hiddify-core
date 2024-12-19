@@ -120,7 +120,7 @@ webui() {
 
 windows-amd64() {
     env GOOS=windows GOARCH=amd64 CGO_ENABLED=1 go build -trimpath -tags "$TAGS" -ldflags="-s -w -checklinkname=0" -buildmode=c-shared -v -o "$BINDIR/$LIBNAME.dll" ./custom
-	go install -ldflags="-s -w -checklinkname=0" -mod=readonly github.com/akavel/rsrc@latest || echo "rsrc error in installation"
+    go install -ldflags="-s -w -checklinkname=0" -mod=readonly github.com/akavel/rsrc@latest || echo "rsrc error in installation"
     go run -ldflags="-s -w -checklinkname=0" ./cli tunnel exit
     cp "$BINDIR/$LIBNAME.dll" ./${LIBNAME}.dll
     $(go env GOPATH)/bin/rsrc -ico ./assets/hiddify-cli.ico -o ./cli/bydll/cli.syso || echo "rsrc error in syso"
