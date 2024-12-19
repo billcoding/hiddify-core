@@ -190,9 +190,6 @@ case $1 in
     go-sdk-download)
         go-sdk-download
         ;;
-    go-sdk-configure)
-        go-sdk-configure
-        ;;
     go-deps-install)
         go-deps-install
         ;;
