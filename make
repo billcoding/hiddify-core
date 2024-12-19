@@ -242,7 +242,7 @@ case $1 in
         clean
         ;;
     *)
-        echo "Usage: $0 {go-sdk-check|go-prints|go-sdk-download|go-deps-install|proto-generate|prepare-install|headers|android|ios-full|ios|webui|windows-amd64|linux-amd64|linux-custom|macos-amd64|macos-arm64|macos-universal|build-protobuf|clean}"
+        echo "Usage: $0 {go-sdk-check|go-prints|go-sdk-download|go-deps-install|proto-generate|prepare-install|headers|android|android-amd64|ios-full|ios|webui|windows-amd64|linux-amd64|linux-custom|macos-amd64|macos-arm64|macos-universal|build-protobuf|clean}"
         exit 1
         ;;
 esac
